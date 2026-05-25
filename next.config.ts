@@ -20,7 +20,7 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' blob: data: https://picsum.photos https://firebasestorage.googleapis.com https://*.tile.openstreetmap.org",
+      "img-src 'self' blob: data: https://picsum.photos https://firebasestorage.googleapis.com https://lh3.googleusercontent.com https://*.tile.openstreetmap.org",
       "font-src 'self' data: https://fonts.gstatic.com",
       [
         "connect-src 'self'",
@@ -51,6 +51,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'picsum.photos' },
       { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
   async headers() {

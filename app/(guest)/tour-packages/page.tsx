@@ -229,7 +229,7 @@ function TourPackagesContent() {
             {visible.map((pkg) => (
               <PackageCard
                 key={pkg.id}
-                image={pkg.packageImages[0]}
+                image={pkg.packageImages?.[0] ?? ''}
                 title={pkg.packageName}
                 price={pkg.pricePerPerson}
                 pricePrefix="Starting from"

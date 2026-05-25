@@ -43,30 +43,39 @@ export const TourOperatorDropdown = ({ value, onChange, lockedByPromo = false, l
                 );
                 if (cancelled) return;
 
-                const base = snap.docs
+                type OperatorBase = TourOperatorOption & { storagePath: string | null }
+
+                const base: OperatorBase[] = snap.docs
                     .flatMap((d) => {
                         const data = d.data() as {
                             companyName?: string;
                             profileImage?: string;
                         };
                         const label = data.companyName?.trim();
-                        if (!label) return [];
+                        if (!label) return [] as OperatorBase[];
                         const words = label.split(/\s+/).filter(Boolean);
                         const initials = words.length >= 2
                             ? (words[0][0] + words[words.length - 1][0]).toUpperCase()
                             : label.slice(0, 2).toUpperCase();
-                        return [{ uid: d.id, label, initials, imageUrl: data.profileImage ?? null }];
+                        const raw = typeof data.profileImage === 'string' ? data.profileImage.trim() : '';
+                        // Only accept absolute URLs — relative paths (e.g. "signup-requests/UUID/photo.jpg")
+                        // must go through getDownloadURL to become valid https:// URLs
+                        const imageUrl = raw.startsWith('http') ? raw : null;
+                        const storagePath = !raw.startsWith('http') && raw ? raw : null;
+                        return [{ uid: d.id, label, initials, imageUrl, storagePath }];
                     })
                     .sort((a, b) => a.label.localeCompare(b.label));
 
                 const withImages = await Promise.all(
-                    base.map(async (op) => {
+                    base.map(async (op): Promise<TourOperatorOption> => {
                         if (op.imageUrl) return op;
+                        // Use the actual Firestore storage path if available, else fall back to default location
+                        const path = op.storagePath ?? `profile-pictures/${op.uid}.jpg`;
                         try {
-                            const url = await getDownloadURL(ref(firebaseStorage, `profile-pictures/${op.uid}.jpg`));
-                            return { ...op, imageUrl: url };
+                            const url = await getDownloadURL(ref(firebaseStorage, path));
+                            return { uid: op.uid, label: op.label, initials: op.initials, imageUrl: url };
                         } catch {
-                            return op;
+                            return { uid: op.uid, label: op.label, initials: op.initials, imageUrl: null };
                         }
                     })
                 );

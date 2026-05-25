@@ -247,7 +247,8 @@ function TourPackageDetailInner() {
     ? reviews
     : reviews.filter((r) => Math.round(((r as ApprovedReview & { rating?: number }).rating ?? 5)) === parseInt(reviewFilter))
 
-  const heroImages = pkg.packageImages.slice(0, 3)
+  const allImages = pkg.packageImages.filter(Boolean)
+  const heroImages = allImages.slice(0, 3)
 
   const handleBook = () => {
     const qs = new URLSearchParams({
@@ -833,7 +834,7 @@ function TourPackageDetailInner() {
       {/* ── Mobile booking drawer ── */}
       {lightboxIdx !== null && (
         <Lightbox
-          images={pkg.packageImages}
+          images={allImages}
           idx={lightboxIdx}
           onClose={() => setLightboxIdx(null)}
           onChange={setLightboxIdx}

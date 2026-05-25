@@ -215,7 +215,8 @@ function ActivityDetailInner() {
     )
   }
 
-  const heroImages = activity.activityImages.slice(0, 3)
+  const allImages = activity.activityImages.filter(Boolean)
+  const heroImages = allImages.slice(0, 3)
 
   const avgRating = reviews.length > 0
     ? reviews.reduce((sum, r) => sum + ((r as ApprovedReview & { rating?: number }).rating ?? 5), 0) / reviews.length
@@ -540,7 +541,7 @@ function ActivityDetailInner() {
 
       {lightboxIdx !== null && (
         <Lightbox
-          images={activity.activityImages}
+          images={allImages}
           idx={lightboxIdx}
           onClose={() => setLightboxIdx(null)}
           onChange={setLightboxIdx}

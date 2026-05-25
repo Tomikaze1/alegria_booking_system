@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useLayoutEffect, Suspense, useMemo, useRef } from 'react'
+import { useState, useEffect, Suspense, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Footer from '@/app/components/Footer'
@@ -40,7 +40,7 @@ function PriceRangeSlider({ min, max, value, onChange }: {
   const step = Math.max(1, Math.ceil((max - min) / 100))
   const fillRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = fillRef.current
     if (!el) return
     el.style.left = `${loPercent}%`
@@ -575,7 +575,7 @@ function ActivitiesContent() {
               {popularPackages.map((pkg) => (
                 <PackageCard
                   key={pkg.id}
-                  image={pkg.packageImages[0]}
+                  image={pkg.packageImages?.[0] ?? ''}
                   title={pkg.packageName}
                   description={pkg.packageDescription}
                   price={pkg.pricePerPerson}
