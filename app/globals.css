@@ -71,6 +71,49 @@ progress.category-bar::-moz-progress-bar {
   border-radius: 9999px;
 }
 
+/* BentoGallery grid layouts — avoids inline gridTemplate* styles */
+.bento-grid-1 { grid-template-areas: "a";            grid-template-columns: 1fr;             grid-template-rows: 1fr; }
+.bento-grid-2 { grid-template-areas: "a b";          grid-template-columns: 1fr 1fr;         grid-template-rows: 1fr; }
+.bento-grid-3 { grid-template-areas: "a b" "a c";    grid-template-columns: 1fr 1fr;         grid-template-rows: 1fr 1fr; }
+.bento-grid-4 { grid-template-areas: "a b" "c d";    grid-template-columns: 1fr 1fr;         grid-template-rows: 1fr 1fr; }
+.bento-grid-5 { grid-template-areas: "a b c" "a d e"; grid-template-columns: 1fr 1fr 1fr;   grid-template-rows: 1fr 1fr; }
+
+/* Dual-handle price range slider */
+.dual-range {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  background: transparent;
+  height: 100%;
+}
+.dual-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2.5px solid #22c55e;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+.dual-range::-moz-range-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2.5px solid #22c55e;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  border: none;
+}
+.dual-range::-webkit-slider-runnable-track { background: transparent; }
+.dual-range::-moz-range-track { background: transparent; }
+
 /* Shared form field helpers */
 .field-label {
   @apply block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1;
