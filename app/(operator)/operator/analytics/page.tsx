@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import type { User } from "firebase/auth";
 import {
@@ -186,6 +186,11 @@ export default function Analytics() {
     : "—";
 
   const [showFilters, setShowFilters] = useState(false);
+  const filtersButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    filtersButtonRef.current?.setAttribute('aria-pressed', showFilters ? 'true' : 'false');
+  }, [showFilters]);
 
   // Derived option lists for the controlled filter panel.
   const nationalityOptions = dashboard?.filters.options.nationalities ?? [];
@@ -356,9 +361,10 @@ export default function Analytics() {
                   )}
                 </p>
                 <button
+                  ref={filtersButtonRef}
                   type="button"
                   onClick={() => setShowFilters((v) => !v)}
-                  aria-pressed={showFilters}
+                  aria-pressed="false"
                   className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-medium shadow-sm transition-colors ${
                     showFilters
                       ? "border-[#0F5132] bg-[#0F5132] text-white hover:bg-[#0c4128]"

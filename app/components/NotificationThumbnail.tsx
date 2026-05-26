@@ -27,8 +27,7 @@ export default function NotificationThumbnail({
 
   return (
     <div
-      className={`shrink-0 rounded-lg overflow-hidden flex items-center justify-center ${stretch ? 'self-stretch' : ''} ${hasImage ? 'bg-gray-100' : 'bg-green-50'}`}
-      style={{ width: px, ...(stretch ? {} : { height: px }) }}
+      className={`shrink-0 rounded-lg overflow-hidden flex items-center justify-center ${stretch ? `notif-thumb-${size}-stretch self-stretch` : `notif-thumb-${size}`} ${hasImage ? 'bg-gray-100' : 'bg-green-50'}`}
     >
       {hasImage ? (
         <div className="relative w-full h-full">

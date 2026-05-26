@@ -126,6 +126,7 @@ const GuestRow = ({ idx, guest, onUpdate, onRemove, externalErrors = {}, submitt
                         Gender <span className="text-red-400">*</span>
                     </label>
                     <select
+                        aria-label="Gender"
                         value={guest.gender ?? ""}
                         onChange={(e) => handleChange("gender", e.target.value)}
                         onBlur={(e) => handleBlur("gender", e.target.value)}
@@ -163,6 +164,7 @@ const GuestRow = ({ idx, guest, onUpdate, onRemove, externalErrors = {}, submitt
                         Guest Type <span className="text-red-400">*</span>
                     </label>
                     <select
+                        aria-label="Guest type"
                         value={guest.guestType ?? "adult"}
                         onChange={(e) => handleChange("guestType", e.target.value)}
                         className={`${inputCls(false)} bg-white`}

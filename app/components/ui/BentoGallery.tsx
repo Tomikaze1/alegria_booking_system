@@ -28,7 +28,7 @@ export function Lightbox({ images, idx, onClose, onChange }: {
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center" onClick={onClose}>
       <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-        <div className="relative w-full max-w-5xl mx-4" style={{ height: '80vh' }}>
+        <div className="bento-lightbox-img">
           <Image
             src={images[idx]}
             alt={`Image ${idx + 1}`}
@@ -39,6 +39,7 @@ export function Lightbox({ images, idx, onClose, onChange }: {
         </div>
         {idx > 0 && (
           <button
+            aria-label="Previous image"
             onClick={() => onChange(idx - 1)}
             className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white rounded-full p-2.5 sm:p-3 transition-colors"
           >
@@ -47,6 +48,7 @@ export function Lightbox({ images, idx, onClose, onChange }: {
         )}
         {idx < images.length - 1 && (
           <button
+            aria-label="Next image"
             onClick={() => onChange(idx + 1)}
             className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white rounded-full p-2.5 sm:p-3 transition-colors"
           >
@@ -54,6 +56,7 @@ export function Lightbox({ images, idx, onClose, onChange }: {
           </button>
         )}
         <button
+          aria-label="Close"
           onClick={onClose}
           className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white rounded-full p-2 transition-colors"
         >
@@ -79,36 +82,20 @@ export function BentoGallery({ images, alt, onImageClick }: {
   const extra = images.length > MAX_VISIBLE ? images.length - MAX_VISIBLE : 0
   const n = visible.length
 
-  type GridCfg = { areas: string; cols: string; rows: string }
-  const configs: Record<number, GridCfg> = {
-    1: { areas: '"a"',               cols: '1fr',           rows: '1fr' },
-    2: { areas: '"a b"',             cols: '1fr 1fr',       rows: '1fr' },
-    3: { areas: '"a b" "a c"',       cols: '1fr 1fr',       rows: '1fr 1fr' },
-    4: { areas: '"a b" "c d"',       cols: '1fr 1fr',       rows: '1fr 1fr' },
-    5: { areas: '"a b c" "a d e"',   cols: '1fr 1fr 1fr',   rows: '1fr 1fr' },
-  }
-  const cfg = configs[Math.max(1, Math.min(n, 5))]
   const letters = ['a', 'b', 'c', 'd', 'e']
 
   return (
     <>
       {/* Desktop: bento grid */}
       <div
-        className="hidden sm:grid gap-2 p-2 rounded-2xl bg-white/35 backdrop-blur-sm"
-        style={{
-          gridTemplateAreas: cfg.areas,
-          gridTemplateColumns: cfg.cols,
-          gridTemplateRows: cfg.rows,
-          height: 420,
-        }}
+        className={`hidden sm:grid gap-2 p-2 rounded-2xl bg-white/35 backdrop-blur-sm bento-gallery-h bento-grid-${Math.max(1, Math.min(n, 5))}`}
       >
         {visible.map((src, i) => {
           const isLast = i === visible.length - 1
           return (
             <button
               key={i}
-              style={{ gridArea: letters[i] }}
-              className="relative overflow-hidden rounded-xl group focus:outline-none"
+              className={`bento-item-${letters[i]} relative overflow-hidden rounded-xl group focus:outline-none`}
               onClick={() => onImageClick(i)}
             >
               <Image
@@ -130,17 +117,12 @@ export function BentoGallery({ images, alt, onImageClick }: {
       </div>
 
       {/* Mobile: horizontal swipe carousel */}
-      <div
-        className="sm:hidden flex gap-2 overflow-x-auto scrollbar-hide"
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        style={{ WebkitOverflowScrolling: 'touch' } as any}
-      >
+      <div className="sm:hidden flex gap-2 overflow-x-auto scrollbar-hide">
         {images.map((src, i) => (
           <button
             key={i}
             onClick={() => onImageClick(i)}
-            className="relative shrink-0 rounded-2xl overflow-hidden focus:outline-none"
-            style={{ width: '82vw', height: 220 }}
+            className="bento-mobile-item relative rounded-2xl overflow-hidden focus:outline-none"
           >
             <Image
               src={src}

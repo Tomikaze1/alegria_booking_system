@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import NotificationThumbnail from '@/app/components/NotificationThumbnail';
 import type { NotificationRow } from '@/app/hooks/useNotifications';
@@ -21,6 +22,16 @@ export default function ToastItem({
   toastDuration,
   onDismiss,
 }: ToastItemProps) {
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = progressRef.current;
+    if (!el) return;
+    el.style.animation = visible
+      ? `toast-progress ${toastDuration}ms linear forwards`
+      : 'none';
+  }, [visible, toastDuration]);
+
   return (
     <div
       className={`w-72 rounded-xl border border-gray-200 bg-white shadow-xl shadow-gray-900/10 ring-1 ring-gray-900/5 overflow-hidden transition-all duration-300 ${
@@ -45,20 +56,7 @@ export default function ToastItem({
           <X className="h-3.5 w-3.5" />
         </button>
       </div>
-      <div
-        className="h-0.5 bg-[#558B2F] origin-left"
-        style={{
-          animation: visible
-            ? `toast-progress ${toastDuration}ms linear forwards`
-            : 'none',
-        }}
-      />
-      <style>{`
-        @keyframes toast-progress {
-          from { transform: scaleX(1); }
-          to { transform: scaleX(0); }
-        }
-      `}</style>
+      <div ref={progressRef} className="h-0.5 bg-[#558B2F] origin-left" />
     </div>
   );
 }

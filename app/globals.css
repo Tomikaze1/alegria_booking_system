@@ -77,6 +77,28 @@ progress.category-bar::-moz-progress-bar {
 .bento-grid-3 { grid-template-areas: "a b" "a c";    grid-template-columns: 1fr 1fr;         grid-template-rows: 1fr 1fr; }
 .bento-grid-4 { grid-template-areas: "a b" "c d";    grid-template-columns: 1fr 1fr;         grid-template-rows: 1fr 1fr; }
 .bento-grid-5 { grid-template-areas: "a b c" "a d e"; grid-template-columns: 1fr 1fr 1fr;   grid-template-rows: 1fr 1fr; }
+.bento-gallery-h { height: 420px; }
+.bento-item-a { grid-area: a; }
+.bento-item-b { grid-area: b; }
+.bento-item-c { grid-area: c; }
+.bento-item-d { grid-area: d; }
+.bento-item-e { grid-area: e; }
+.bento-lightbox-img { position: relative; width: 100%; max-width: 80rem; margin-left: 1rem; margin-right: 1rem; height: 80vh; }
+.bento-mobile-item { width: 82vw; height: 220px; }
+
+/* ToastItem progress bar animation */
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+/* NotificationThumbnail size classes */
+.notif-thumb-sm { width: 40px; height: 40px; }
+.notif-thumb-md { width: 60px; height: 60px; }
+.notif-thumb-lg { width: 80px; height: 80px; }
+.notif-thumb-sm-stretch { width: 40px; }
+.notif-thumb-md-stretch { width: 60px; }
+.notif-thumb-lg-stretch { width: 80px; }
 
 /* Dual-handle price range slider */
 .dual-range {

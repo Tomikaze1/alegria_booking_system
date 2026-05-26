@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import type { FieldErrors } from './types';
 
 type LoginPanelProps = {
@@ -25,23 +28,33 @@ export function LoginPanel({
   onSubmit,
   onForgotPassword,
 }: LoginPanelProps) {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    emailRef.current?.setAttribute('aria-invalid', (fieldErrors.email || credentialError) ? 'true' : 'false');
+  }, [fieldErrors.email, credentialError]);
+
+  useEffect(() => {
+    passwordRef.current?.setAttribute('aria-invalid', (fieldErrors.password || credentialError) ? 'true' : 'false');
+  }, [fieldErrors.password, credentialError]);
+
   return (
     <form onSubmit={onSubmit} noValidate className="w-full max-w-sm">
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-semibold text-gray-900">
+          <label htmlFor="email" className="block text-sm font-semibold text-gray-900">
             Email
           </label>
           <input
+            ref={emailRef}
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
             id="email"
             type="email"
             inputMode="email"
             autoComplete="username"
-            aria-invalid={
-              fieldErrors.email || credentialError ? 'true' : 'false'
-            }
+            aria-invalid="false"
             aria-describedby={fieldErrors.email ? emailErrorId : undefined}
             className={`mt-2 w-full rounded-lg border px-4 py-2.5 text-gray-900 outline-none focus:ring-2 disabled:bg-gray-50 ${
               fieldErrors.email || credentialError
@@ -55,18 +68,17 @@ export function LoginPanel({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-900">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-900">
             Password
           </label>
           <input
+            ref={passwordRef}
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             id="password"
             type="password"
             autoComplete="current-password"
-            aria-invalid={
-              fieldErrors.password || credentialError ? 'true' : 'false'
-            }
+            aria-invalid="false"
             aria-describedby={
               fieldErrors.password ? passwordErrorId : undefined
             }

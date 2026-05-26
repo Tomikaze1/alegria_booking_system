@@ -12,6 +12,7 @@ interface AccountAvatarProps {
 export default function AccountAvatar({ profile, onSignOut }: AccountAvatarProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const initials = [profile.firstName?.[0], profile.lastName?.[0]]
     .filter(Boolean)
@@ -29,13 +30,18 @@ export default function AccountAvatar({ profile, onSignOut }: AccountAvatarProps
     return () => document.removeEventListener('mousedown', onDoc);
   }, [open]);
 
+  useEffect(() => {
+    triggerRef.current?.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }, [open]);
+
   return (
     <div ref={rootRef} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label="Account menu"
-        aria-expanded={open}
+        aria-expanded="false"
         className="flex h-10 w-10 items-center justify-center rounded-full bg-[#558B2F] text-white text-sm font-semibold shadow-md shadow-gray-900/5 ring-1 ring-[#558B2F]/30 hover:bg-[#4a7a28] transition-colors select-none"
       >
         {initials}
